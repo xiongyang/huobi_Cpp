@@ -2,7 +2,7 @@
 #define CHANNELS_H
 
 #include "Huobi/Enums.h"
-#include "../TimeService.h"
+#include "TimeService.h"
 #include "JsonWriter.h"
 
 namespace Huobi {

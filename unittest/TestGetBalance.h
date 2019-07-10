@@ -20,7 +20,7 @@
 #include "../include/Huobi/HuobiApiException.h"
 #include "../include/Huobi/Decimal.h"
 #include "../src/Utils/JsonDocument.h"
-#include "../src/TimeService.h"
+#include "Utils/TimeService.h"
 
 
 using namespace Huobi;

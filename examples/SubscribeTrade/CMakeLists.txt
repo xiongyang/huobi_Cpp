@@ -51,7 +51,7 @@ endif ()
 
 MESSAGE(STATUS "operation system is ${CMAKE_SYSTEM}")
 
-PROJECT(SubscribeAccountChange)
+PROJECT(SubscribeTrade)
 
 AUX_SOURCE_DIRECTORY(. DIR_SRCS)
 ADD_EXECUTABLE(${PROJECT_NAME} ${DIR_SRCS})

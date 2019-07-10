@@ -1,5 +1,5 @@
-#ifndef WEBSOCKETIMPL_H
-#define WEBSOCKETIMPL_H
+#ifndef SUBSCRIPTIONCLIENTIMPL_H
+#define SUBSCRIPTIONCLIENTIMPL_H
 
 #include <list>
 #include "Huobi/SubscriptionClient.h"
@@ -105,5 +105,5 @@ namespace Huobi {
 
 
 
-#endif /* WEBSOCKETIMPL_H */
+#endif /* SUBSCRIPTIONCLIENTIMPL_H */
 

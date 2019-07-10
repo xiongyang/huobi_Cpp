@@ -6,7 +6,7 @@
 #include "Huobi/HuobiApiException.h"
 #include "Huobi/Account.h"
 #include "Utils/UrlParamsBuilder.h"
-#include "TimeService.h"
+#include "Utils/TimeService.h"
 #include "InputChecker.h"
 #include "Utils/JsonWriter.h"
 
