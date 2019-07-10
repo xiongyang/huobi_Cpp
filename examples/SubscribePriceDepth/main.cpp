@@ -10,7 +10,6 @@
 using namespace Huobi;
 using namespace std;
 
-
 int main(int argc, char **argv) {
     SubscriptionClient *client = createSubscriptionClient();
     client->subscribePriceDepthEvent("btcusdt,ethusdt,htusdt,htbtc", [](PriceDepthEvent pdEvent) {
@@ -31,3 +30,4 @@ int main(int argc, char **argv) {
 
     client->startService();
 }
+

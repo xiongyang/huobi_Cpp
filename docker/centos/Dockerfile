@@ -43,6 +43,9 @@ RUN yum install -y openssl openssl-devel
 #安装libwebsockets v3.1.0
 RUN yum install -y libwebsockets libwebsockets-devel
 
+#Qt
+RUN yum install -y qt5-qtbase qt5-qtbase-devel qt5-qtbase-common qt5-qtwebsockets qt5-qtwebsockets-devel
+
 #单元测试
 RUN yum install -y gtest gtest-devel gmock gmock-devel
 

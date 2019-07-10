@@ -29,6 +29,9 @@ RUN apt-get install -yq --no-install-recommends git
 RUN apt-get install -yq --no-install-recommends cmake
 RUN apt-get install -yq --no-install-recommends clang
 
+#Qt
+RUN apt-get install -yq --no-install-recommends qt5-default libqt5websockets5-dev libqt5websockets5
+
 #网络
 RUN apt-get install -yq --no-install-recommends iputils-ping
 RUN apt-get install -yq --no-install-recommends net-tools

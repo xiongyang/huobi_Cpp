@@ -21,12 +21,12 @@ int main(int argc, char **argv) {
         cout << "Timestamp: " << pdEvent.data.timestamp << endl;
         cout << "bids: " << endl;
         for (DepthEntry depth : pdEvent.data.bids) {
-            cout << "Price: " << depth.price;
+            cout << "Price: " << depth.price << endl;
             cout << "Amount: " << depth.amount << endl;
         }
         cout << "asks: " << endl;
         for (DepthEntry depth : pdEvent.data.asks) {
-            cout << "Price: " << depth.price;
+            cout << "Price: " << depth.price << endl;
             cout << "Amount: " << depth.amount << endl;
         }
     });

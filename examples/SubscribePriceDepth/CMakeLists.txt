@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
+
 cmake_policy(VERSION 2.8)
+
 
 #设置编译器
 IF (CMAKE_COMPILER_TYPE MATCHES "GCC")
@@ -124,7 +126,6 @@ MESSAGE(STATUS ${LIBDECNUMBER_PATH} " found")
 
 find_package(Qt5 COMPONENTS Core WebSockets REQUIRED)
 
-
 FIND_PATH(
     LIBDECNUMBER_INCLUDE_DIR
     decNumber.h 
@@ -141,4 +142,5 @@ TARGET_LINK_LIBRARIES(${PROJECT_NAME}
         ${LIBSSL_PATH} ${LIBCRYPTO_PATH} ${LIBWEBSOCKET_PATH}
         ${LIBCURL_PATH} ${LIBZ_PATH} ${LIBPTHREAD_PATH}
         Qt5::Core Qt5::WebSockets)
+
 
