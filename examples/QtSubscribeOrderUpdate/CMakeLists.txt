@@ -55,6 +55,10 @@ endif ()
 
 MESSAGE(STATUS "operation system is ${CMAKE_SYSTEM}")
 
+if (APPLE)
+    set(CMAKE_PREFIX_PATH /usr/local/opt/qt5)
+endif ()
+
 PROJECT(SubscribeOrderUpdate)
 
 AUX_SOURCE_DIRECTORY(. DIR_SRCS)

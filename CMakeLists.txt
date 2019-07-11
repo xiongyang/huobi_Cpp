@@ -107,6 +107,7 @@ include_directories(/usr/local/include)
 
 if (APPLE)
     include_directories(/usr/local/opt/openssl/include)
+    set(CMAKE_PREFIX_PATH /usr/local/opt/qt5)
 endif ()
 
 
