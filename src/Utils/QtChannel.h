@@ -6,6 +6,7 @@
 #include "QtJsonTool.h"
 #include <QtCore/QObject>
 #include <iostream>
+#include "ApiSignature.h"
 
 using namespace std;
 
@@ -14,6 +15,45 @@ namespace Huobi {
     class QtChannel : public QObject {
     Q_OBJECT
     public:
+
+        static QString authChannel(string host, string accessKey, string secretKey) {
+            time_t t = time(NULL);
+            struct tm *local = gmtime(&t);
+            char timeBuf[100] = {0};
+            sprintf(timeBuf, "%04d-%02d-%02dT%02d%%3A%02d%%3A%02d",
+                    local->tm_year + 1900,
+                    local->tm_mon + 1,
+                    local->tm_mday,
+                    local->tm_hour,
+                    local->tm_min,
+                    local->tm_sec);
+            char buf[100] = {0};
+            sprintf(buf, "%04d-%02d-%02dT%02d:%02d:%02d",
+                    local->tm_year + 1900,
+                    local->tm_mon + 1,
+                    local->tm_mday,
+                    local->tm_hour,
+                    local->tm_min,
+                    local->tm_sec);
+            string signa = ApiSignature::CreateSignature(host,
+                                                              accessKey,
+                                                              secretKey,
+                                                              "/ws/v1", "GET", timeBuf, "");
+
+            QJsonObject mjson;
+            mjson.insert("SignatureVersion", "2");
+            mjson.insert("op", "auth");
+            mjson.insert("AccessKeyId", QString(accessKey.c_str()));
+            mjson.insert("Signature", QString(signa.c_str()));
+            mjson.insert("SignatureMethod", "HmacSHA256");
+            mjson.insert("Timestamp", buf);
+
+            QtJsonTool jsonTool;
+            QString topic = jsonTool.getStringFromJsonObject(mjson);
+            qDebug() << topic << endl;
+            return topic;
+        }
+
 
         static QList<QString> candlestickChannel(const char *symbols, const CandlestickInterval &interval) {
             QStringList symbollist = QString(symbols).split(',');

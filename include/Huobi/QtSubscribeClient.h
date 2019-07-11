@@ -129,13 +129,10 @@ namespace Huobi {
                         HuobiApiException & )>()) = 0;
     };
 
-    SubscribeClient *createSubscribeClient(const string &url);
 
     SubscribeClient *createSubscribeClient();
 
     SubscribeClient *createSubscribeClient(const char *accessKey, const char *secretKey);
-
-    SubscribeClient *createSubscribeClient(const char *accessKey, const char *secretKey, const string &url);
 }
 
 

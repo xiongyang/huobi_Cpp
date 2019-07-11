@@ -16,17 +16,10 @@ namespace Huobi {
         return new SubscriptionClientImpl();
     }
 
-    SubscribeClient *createSubscribeClient(const string &url) {
-        return new QtSubscribeClientImpl(url);
-    }
-
     SubscribeClient *createSubscribeClient() {
         return new QtSubscribeClientImpl();
     }
 
-    SubscribeClient *createSubscribeClient(const char *accessKey, const char *secretKey, const string &url) {
-        return new QtSubscribeClientImpl(accessKey, secretKey, url);
-    }
 
     SubscribeClient *createSubscribeClient(const char *accessKey, const char *secretKey) {
         return new QtSubscribeClientImpl(accessKey, secretKey);

@@ -28,6 +28,9 @@ namespace Huobi {
     public:
         explicit QtWebSocketClient(const QUrl &url, QList<QString> topics, QObject *parent = nullptr);
 
+        explicit QtWebSocketClient(const QUrl &url, QList<QString> topics, QString authTopic,
+                                   QObject *parent = nullptr);
+
         ~QtWebSocketClient();
 
     private Q_SLOTS:
@@ -37,18 +40,21 @@ namespace Huobi {
         void onBinaryMessageReceived(QByteArray message);
 
     Q_SIGNALS:
+
         void received(QJsonObject jsonObject);
 
     private:
-        void sendPongOnMarketLine(QJsonObject& jsonObject);
-        void sendPongOnTradingLine(QJsonObject& jsonObject);
+        void sendPongOnMarketLine(QJsonObject &jsonObject);
+
+        void sendPongOnTradingLine(QJsonObject &jsonObject);
+
         void sendTopic();
 
     private:
         QWebSocket m_webSocket;
-//        QtGzipTool *m_gzipTool;
-//        QtJsonTool *m_jsonTool;
         QList<QString> m_topics;
+        QString m_authTopic;
+        bool m_isNeedAuth;
     };
 }
 #endif // QTWEBSOCKETCLIENT_H

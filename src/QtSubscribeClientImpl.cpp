@@ -12,14 +12,6 @@ using namespace std;
 QT_USE_NAMESPACE
 
 namespace Huobi {
-    QtSubscribeClientImpl::QtSubscribeClientImpl(const char *accessKey, const char *secretKey, const string &url,
-                                                 QObject *parent) :
-            QObject(parent) {
-        m_accessKey = accessKey;
-        m_secretKey = secretKey;
-        m_url = url;
-
-    }
 
     QtSubscribeClientImpl::QtSubscribeClientImpl(const char *accessKey, const char *secretKey, QObject *parent) :
             QObject(parent) {
@@ -27,27 +19,9 @@ namespace Huobi {
         m_secretKey = secretKey;
     }
 
-    QtSubscribeClientImpl::QtSubscribeClientImpl(const string &url, QObject *parent) :
-            QObject(parent) {
-        m_url = url;
-    }
 
     QtSubscribeClientImpl::QtSubscribeClientImpl(QObject *parent) :
             QObject(parent) {
-
-//        impl = new WebSocketApiImpl(apiKey, secretKey);
-//        if (!op.url.empty()) {
-//            host = GetHost(op.url);
-//            RequestOptions resop;
-//            resop.url = op.url;
-//            RestApiImpl* restimpl = new RestApiImpl(apiKey.c_str(), secretKey.c_str(), resop);
-//            AccountsInfoMap::updateUserInfo(apiKey, restimpl);
-//            delete restimpl;
-//        } else {
-//            RestApiImpl* restimpl = new RestApiImpl(apiKey.c_str(), secretKey.c_str());
-//            AccountsInfoMap::updateUserInfo(apiKey, restimpl);
-//            delete restimpl;
-//        }
     }
 
     QtSubscribeClientImpl::~QtSubscribeClientImpl() {
@@ -55,12 +29,14 @@ namespace Huobi {
         m_pClientList.clear();
     }
 
+
     void QtSubscribeClientImpl::subscribeCandlestickEvent(
             const char *symbols,
             CandlestickInterval interval,
             const std::function<void(const CandlestickEvent &)> &callback,
             const std::function<void(HuobiApiException &)> &errorHandler) {
         QList<QString> topics = QtChannel::candlestickChannel(symbols, interval);
+        m_url = m_marketUrl;
 
         auto *pClient = new QtWebSocketClient(QUrl(QString::fromStdString(m_url)), topics);
         connect(pClient, &QtWebSocketClient::received, this, &QtSubscribeClientImpl::onReceivedCandlestickEvent);
@@ -76,7 +52,7 @@ namespace Huobi {
             const std::function<void(const TradeEvent &)> &callback,
             const std::function<void(HuobiApiException &)> &errorHandler) {
         QList<QString> topics = QtChannel::tradeChannel(symbols);
-
+        m_url = m_marketUrl;
         auto *pClient = new QtWebSocketClient(QUrl(QString::fromStdString(m_url)), topics);
         connect(pClient, &QtWebSocketClient::received, this, &QtSubscribeClientImpl::onReceivedTradeEvent);
         connect(this, &QtSubscribeClientImpl::callbackSignalTradeEvent, this, callback);
@@ -92,6 +68,7 @@ namespace Huobi {
             const std::function<void(const PriceDepthEvent &)> &callback,
             const std::function<void(HuobiApiException &)> &errorHandler) {
         QList<QString> topics = QtChannel::priceDepthChannel(symbols);
+        m_url = m_marketUrl;
 
         auto *pClient = new QtWebSocketClient(QUrl(QString::fromStdString(m_url)), topics);
         connect(pClient, &QtWebSocketClient::received, this, &QtSubscribeClientImpl::onReceivedPriceDepthEvent);
@@ -107,6 +84,7 @@ namespace Huobi {
             const std::function<void(const TradeStatisticsEvent &)> &callback,
             const std::function<void(HuobiApiException &)> &errorHandler) {
         QList<QString> topics = QtChannel::tradeStatisticsChannel(symbols);
+        m_url = m_marketUrl;
 
         auto *pClient = new QtWebSocketClient(QUrl(QString::fromStdString(m_url)), topics);
         connect(pClient, &QtWebSocketClient::received, this, &QtSubscribeClientImpl::onReceivedTradeStatisticsEvent);
@@ -122,8 +100,9 @@ namespace Huobi {
             const std::function<void(const OrderUpdateEvent &)> &callback,
             const std::function<void(HuobiApiException &)> &errorHandler) {
         QList<QString> topics = QtChannel::orderUpdateChannel(symbols);
-
-        auto *pClient = new QtWebSocketClient(QUrl(QString::fromStdString(m_url)), topics);
+        QString authTopic = QtChannel::authChannel(m_host, m_accessKey, m_secretKey);
+        m_url = m_tradeUrl;
+        auto *pClient = new QtWebSocketClient(QUrl(QString::fromStdString(m_url)), topics,authTopic);
         connect(pClient, &QtWebSocketClient::received, this, &QtSubscribeClientImpl::onReceivedOrderUpdateEvent);
         connect(this, &QtSubscribeClientImpl::callbackSignalOrderUpdateEvent, this, callback);
 
@@ -137,8 +116,9 @@ namespace Huobi {
             const std::function<void(const AccountEvent &)> &callback,
             const std::function<void(HuobiApiException &)> &errorHandler) {
         QList<QString> topics = QtChannel::accountChannel(mode);
-
-        auto *pClient = new QtWebSocketClient(QUrl(QString::fromStdString(m_url)), topics);
+        QString authTopic = QtChannel::authChannel(m_host, m_accessKey, m_secretKey);
+        m_url = m_tradeUrl;
+        auto *pClient = new QtWebSocketClient(QUrl(QString::fromStdString(m_url)), topics, authTopic);
         connect(pClient, &QtWebSocketClient::received, this, &QtSubscribeClientImpl::onReceivedAccountEvent);
         connect(this, &QtSubscribeClientImpl::callbackSignalAccountEvent, this, callback);
 

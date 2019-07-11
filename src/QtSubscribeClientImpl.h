@@ -27,12 +27,8 @@ namespace Huobi {
 
     Q_OBJECT
     public:
-        explicit QtSubscribeClientImpl(const string &url, QObject *parent = nullptr);
 
         explicit QtSubscribeClientImpl(QObject *parent = nullptr);
-
-        explicit QtSubscribeClientImpl(const char *accessKey, const char *secretKey, const string &url,
-                                       QObject *parent = nullptr);
 
         explicit QtSubscribeClientImpl(const char *accessKey, const char *secretKey, QObject *parent = nullptr);
 
@@ -109,7 +105,10 @@ namespace Huobi {
     private:
         string m_accessKey;
         string m_secretKey;
-        string m_url = "wss://api.huobi.pro/ws";
+        string m_url;
+        string m_host = "api.huobi.pro";
+        string m_marketUrl = "wss://" + m_host + "/ws";
+        string m_tradeUrl = "wss://" + m_host + "/ws/v1";
         QList<QtWebSocketClient *> m_pClientList;
 
     private:
