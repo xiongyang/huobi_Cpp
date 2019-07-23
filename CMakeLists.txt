@@ -162,7 +162,7 @@ ADD_LIBRARY(${PROJECT_NAME} STATIC ${DIR_SRCS})
 
 target_link_libraries(${PROJECT_NAME}
         ${LIBDECNUMBER_PATH} ${LIBSSL_PATH} ${LIBCRYPTO_PATH} ${LIBWEBSOCKET_PATH} ${LIBCURL_PATH} ${LIBZ_PATH} ${LIBPTHREAD_PATH}
-        Qt5::Core Qt5::WebSockets)
+        Qt5::Core Qt5::WebSockets Qt5::Network)
 
 install(TARGETS ${PROJECT_NAME}
         LIBRARY DESTINATION lib

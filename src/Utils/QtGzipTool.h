@@ -14,9 +14,10 @@ namespace Huobi {
     Q_OBJECT
     public:
         explicit QtGzipTool(QObject *parent = nullptr);
+        ~QtGzipTool();
 
     public:
-        QByteArray gzipUnCompress(QByteArray &src);
+        static QByteArray gzipUnCompress(QByteArray &src);
     };
 }
 #endif // QTGZIPTOOL_H

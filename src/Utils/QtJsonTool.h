@@ -16,11 +16,12 @@ namespace Huobi {
     Q_OBJECT
     public:
         explicit QtJsonTool(QObject *parent = nullptr);
+        ~QtJsonTool();
 
     public:
-        QJsonObject getJsonObjectFromByteArray(const QByteArray buffer);
+        static QJsonObject getJsonObjectFromByteArray(const QByteArray buffer);
 
-        QString getStringFromJsonObject(const QJsonObject &jsonObject);
+        static QString getStringFromJsonObject(const QJsonObject &jsonObject);
     };
 }
 #endif // QTJSONTOOL_H

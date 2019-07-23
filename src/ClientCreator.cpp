@@ -5,6 +5,8 @@
 #include "Huobi/RequestOptions.h"
 #include "Huobi/QtSubscribeClient.h"
 #include "QtSubscribeClientImpl.h"
+#include "Huobi/QtRestClient.h"
+#include "QtRestClientImpl.h"
 
 namespace Huobi {
 
@@ -36,6 +38,14 @@ namespace Huobi {
 
     RequestClient *createRequestClient() {
         return new SyncClientImpl();
+    }
+
+    RestClient *createRestClient() {
+        return new QtRestClientImpl();
+    }
+
+    RestClient *createRestClient(const char *apiKey, const char *secretKey) {
+        return new QtRestClientImpl(apiKey, secretKey);
     }
 
     RequestClient *createRequestClient(const char *apiKey, const char *secretKey) {

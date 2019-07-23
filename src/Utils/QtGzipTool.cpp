@@ -10,6 +10,10 @@ namespace Huobi {
             QObject(parent) {
     }
 
+    QtGzipTool::~QtGzipTool() {
+
+    }
+
     QByteArray QtGzipTool::gzipUnCompress(QByteArray &src) {
         QByteArray outBuffer;
         z_stream strm;

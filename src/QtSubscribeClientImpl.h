@@ -107,12 +107,10 @@ namespace Huobi {
         string m_secretKey;
         string m_url;
         string m_host = "api.huobi.pro";
-        string m_marketUrl = "wss://" + m_host + "/ws";
-        string m_tradeUrl = "wss://" + m_host + "/ws/v1";
+        string m_port = "443";
+        string m_marketUrl = "wss://" + m_host + ":" + m_port + "/ws";
+        string m_tradeUrl = "wss://" + m_host + ":" + m_port + "/ws/v1";
         QList<QtWebSocketClient *> m_pClientList;
-
-    private:
-        Decimal toDecimal(QVariant num);
     };
 }
 

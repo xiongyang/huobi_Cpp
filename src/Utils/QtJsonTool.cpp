@@ -9,6 +9,10 @@ namespace Huobi {
             QObject(parent) {
     }
 
+    QtJsonTool::~QtJsonTool() {
+
+    }
+
     QJsonObject QtJsonTool::getJsonObjectFromByteArray(const QByteArray buffer) {
         QJsonParseError error;
         QJsonDocument jsonDocument = QJsonDocument::fromJson(buffer, &error);
@@ -24,7 +28,7 @@ namespace Huobi {
         return jsonObject;
     }
 
-    QString QtJsonTool::getStringFromJsonObject(const QJsonObject &jsonObject) {
+     QString QtJsonTool::getStringFromJsonObject(const QJsonObject &jsonObject) {
         return QString(QJsonDocument(jsonObject).toJson(QJsonDocument::Compact));
     }
 }

@@ -49,8 +49,7 @@ namespace Huobi {
         QJsonObject mjson;
         mjson.insert("op", "pong");
         mjson.insert("ts", ts);
-        QtJsonTool jsonTool;
-        QString jsonString = jsonTool.getStringFromJsonObject(mjson);
+        QString jsonString = QtJsonTool::getStringFromJsonObject(mjson);
 
         m_webSocket.sendTextMessage(jsonString);
     }
@@ -64,8 +63,7 @@ namespace Huobi {
         QJsonObject mjson;
         mjson.insert("pong", ts);
 
-        QtJsonTool jsonTool;
-        QString jsonString = jsonTool.getStringFromJsonObject(mjson);
+        QString jsonString = QtJsonTool::getStringFromJsonObject(mjson);
 
         m_webSocket.sendTextMessage(jsonString);
     }
@@ -85,11 +83,9 @@ namespace Huobi {
     void QtWebSocketClient::onBinaryMessageReceived(QByteArray message) {
         qDebug() << "收到数据" << endl;
         //解压缩
-        QtGzipTool gzipTool;
-        QByteArray buffer = gzipTool.gzipUnCompress(message);
+        QByteArray buffer = QtGzipTool::gzipUnCompress(message);
         //转成json对象
-        QtJsonTool jsonTool;
-        QJsonObject jsonObject = jsonTool.getJsonObjectFromByteArray(buffer);
+        QJsonObject jsonObject = QtJsonTool::getJsonObjectFromByteArray(buffer);
 
         //收到的数据错误或者为空
         if (jsonObject.isEmpty()) {

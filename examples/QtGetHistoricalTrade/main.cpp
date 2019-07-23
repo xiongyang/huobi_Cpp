@@ -4,27 +4,30 @@
  * and open the template in the editor.
  */
 
-#include <iostream>
 #include "Huobi/HuobiClient.h"
-
+#include<iostream>
+#include<vector>
+#include <QtCore/QCoreApplication>
+#include <QDebug>
 
 using namespace Huobi;
 using namespace std;
 
 int main(int argc, char **argv) {
-    SubscriptionClient *client = createSubscriptionClient();
-    client->subscribeTradeEvent("btcusdt,ethusdt,htusdt,htbtc", [](TradeEvent tradeEvent) {
+    QCoreApplication a(argc, argv);
+    RestClient *client = createRestClient();
 
-        cout << "Timestamp: " << tradeEvent.timestamp << endl;
-        cout << "Trade: " << endl;
-        for (Trade trade : tradeEvent.tradeList) {
-            cout << "TradeId: " << trade.tradeId << endl;
-            cout << "Timestamp: " << trade.timestamp << endl;
+    client->getHistoricalTrade("btcusdt", 5, [](vector<Trade> tradeVes) {
+        cout << "---- Historical trade for btcusdt ----" << endl;
+        for (Trade trade : tradeVes) {
+            cout << "Trade at: " << trade.timestamp << endl;
+            cout << "Id: " << trade.tradeId << endl;
             cout << "Price: " << trade.price << endl;
             cout << "Amount: " << trade.amount << endl;
             cout << "Direction: " << trade.direction.getValue() << endl;
         }
     });
-    client->startService();
 
+    return a.exec();
 }
+

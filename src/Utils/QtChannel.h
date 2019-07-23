@@ -36,9 +36,9 @@ namespace Huobi {
                     local->tm_min,
                     local->tm_sec);
             string signa = ApiSignature::CreateSignature(host,
-                                                              accessKey,
-                                                              secretKey,
-                                                              "/ws/v1", "GET", timeBuf, "");
+                                                         accessKey,
+                                                         secretKey,
+                                                         "/ws/v1", "GET", timeBuf, "");
 
             QJsonObject mjson;
             mjson.insert("SignatureVersion", "2");
@@ -48,8 +48,7 @@ namespace Huobi {
             mjson.insert("SignatureMethod", "HmacSHA256");
             mjson.insert("Timestamp", buf);
 
-            QtJsonTool jsonTool;
-            QString topic = jsonTool.getStringFromJsonObject(mjson);
+            QString topic = QtJsonTool::getStringFromJsonObject(mjson);
             qDebug() << topic << endl;
             return topic;
         }
@@ -57,13 +56,12 @@ namespace Huobi {
 
         static QList<QString> candlestickChannel(const char *symbols, const CandlestickInterval &interval) {
             QStringList symbollist = QString(symbols).split(',');
-            QtJsonTool jsonTool;
             QList<QString> topics;
                     foreach(QString symbol, symbollist) {
                     QJsonObject mjson;
                     mjson.insert("sub", "market." + symbol + ".kline." + QString(interval.getValue().c_str()));
                     mjson.insert("id", QString(to_string(TimeService::getCurrentTimeStamp()).c_str()));
-                    QString topic = jsonTool.getStringFromJsonObject(mjson);
+                    QString topic = QtJsonTool::getStringFromJsonObject(mjson);
                     qDebug() << topic << endl;
                     topics.append(topic);
                 }
@@ -73,13 +71,12 @@ namespace Huobi {
 
         static QList<QString> tradeChannel(const char *symbols) {
             QStringList symbollist = QString(symbols).split(',');
-            QtJsonTool jsonTool;
             QList<QString> topics;
                     foreach(QString symbol, symbollist) {
                     QJsonObject mjson;
                     mjson.insert("sub", "market." + symbol + ".trade.detail");
                     mjson.insert("id", QString(to_string(TimeService::getCurrentTimeStamp()).c_str()));
-                    QString topic = jsonTool.getStringFromJsonObject(mjson);
+                    QString topic = QtJsonTool::getStringFromJsonObject(mjson);
                     qDebug() << topic << endl;
                     topics.append(topic);
                 }
@@ -89,14 +86,12 @@ namespace Huobi {
 
         static QList<QString> priceDepthChannel(const char *symbols) {
             QStringList symbollist = QString(symbols).split(',');
-            QtJsonTool jsonTool;
-
             QList<QString> topics;
                     foreach(QString symbol, symbollist) {
                     QJsonObject mjson;
                     mjson.insert("sub", "market." + symbol + ".depth.step0");
                     mjson.insert("id", QString(to_string(TimeService::getCurrentTimeStamp()).c_str()));
-                    QString topic = jsonTool.getStringFromJsonObject(mjson);
+                    QString topic = QtJsonTool::getStringFromJsonObject(mjson);
                     qDebug() << topic << endl;
                     topics.append(topic);
                 }
@@ -105,17 +100,14 @@ namespace Huobi {
         }
 
         static QList<QString> accountChannel(const BalanceMode &mode) {
-            QtJsonTool jsonTool;
-
             QList<QString> topics;
-
             QJsonObject mjson;
             mjson.insert("op", "sub");
             mjson.insert("cid", QString(to_string(TimeService::getCurrentTimeStamp()).c_str()));
             mjson.insert("topic", "accounts");
             mjson.insert("model", QString(mode.getValue().c_str()));
 
-            QString topic = jsonTool.getStringFromJsonObject(mjson);
+            QString topic = QtJsonTool::getStringFromJsonObject(mjson);
             qDebug() << topic << endl;
             topics.append(topic);
 
@@ -124,15 +116,13 @@ namespace Huobi {
 
         static QList<QString> orderUpdateChannel(const char *symbols) {
             QStringList symbollist = QString(symbols).split(',');
-            QtJsonTool jsonTool;
-
             QList<QString> topics;
                     foreach(QString symbol, symbollist) {
                     QJsonObject mjson;
                     mjson.insert("op", "sub");
                     mjson.insert("cid", QString(to_string(TimeService::getCurrentTimeStamp()).c_str()));
                     mjson.insert("topic", "orders." + symbol);
-                    QString topic = jsonTool.getStringFromJsonObject(mjson);
+                    QString topic = QtJsonTool::getStringFromJsonObject(mjson);
                     qDebug() << topic << endl;
                     topics.append(topic);
                 }
@@ -142,14 +132,12 @@ namespace Huobi {
 
         static QList<QString> tradeStatisticsChannel(const char *symbols) {
             QStringList symbollist = QString(symbols).split(',');
-            QtJsonTool jsonTool;
-
             QList<QString> topics;
                     foreach(QString symbol, symbollist) {
                     QJsonObject mjson;
                     mjson.insert("sub", "market." + symbol + ".detail");
                     mjson.insert("id", QString(to_string(TimeService::getCurrentTimeStamp()).c_str()));
-                    QString topic = jsonTool.getStringFromJsonObject(mjson);
+                    QString topic = QtJsonTool::getStringFromJsonObject(mjson);
                     qDebug() << topic << endl;
                     topics.append(topic);
                 }

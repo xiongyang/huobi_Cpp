@@ -61,6 +61,7 @@
 #include "Huobi/WithdrawRequest.h"
 #include "Huobi/MarginBalanceDetail.h"
 #include "Huobi/QtSubscribeClient.h"
+#include "Huobi/QtRestClient.h"
 
 #endif /* HUOBICLIENT_H */
 

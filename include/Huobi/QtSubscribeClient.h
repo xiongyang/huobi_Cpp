@@ -1,5 +1,5 @@
-#ifndef SUBSCRIBECLIENT_H
-#define SUBSCRIBECLIENT_H
+#ifndef QTSUBSCRIBECLIENT_H
+#define QTSUBSCRIBECLIENT_H
 
 #include <string>
 #include <functional>
@@ -136,5 +136,5 @@ namespace Huobi {
 }
 
 
-#endif /* SUBSCRIBECLIENT_H */
+#endif /* QTSUBSCRIBECLIENT_H */
 
