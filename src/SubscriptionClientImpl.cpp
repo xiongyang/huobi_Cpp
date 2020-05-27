@@ -129,10 +129,12 @@ namespace Huobi {
 
     void SubscriptionClientImpl::createConnection(WebSocketRequest* request) {
         if (dog == nullptr) {
+
             dog = new WebSocketWatchDog(op);
         }
         init_context();
-        WebSocketConnection* connection = new WebSocketConnection(his->apiKey, this->secretKey, request, dog,host, this->isUsingSSL);
+        WebSocketConnection* connection = new WebSocketConnection(
+                this->apiKey, this->secretKey, request, dog, host);
         connectionList.push_back(connection);
     }
 
@@ -185,14 +187,6 @@ namespace Huobi {
             const std::function<void(HuobiApiException&)>& errorHandler) {
         createConnection(impl->subscribeOrderUpdateEvent(parseSymbols(symbols), callback, errorHandler));
     }
-
-    void SubscriptionClientImpl::subscribeOrderUpdateEventNew(
-            const char* symbols,
-            const std::function<void(const OrderUpdateEventNew&) >& callback,
-            const std::function<void(HuobiApiException&)>& errorHandler) {
-        createConnection(impl->subscribeOrderUpdateEventNew(parseSymbols(symbols), callback, errorHandler));
-    }
-
 
     void SubscriptionClientImpl::subscribeAccountEvent(
             const BalanceMode& mode,

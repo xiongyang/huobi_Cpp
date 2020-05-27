@@ -26,10 +26,9 @@ namespace Huobi {
         WebSocketApiImpl *impl;
         std::list<WebSocketConnection*> connectionList;
         SubscriptionOptions op;
-
-        std::string host = "api.huobi.pro";
-        WebSocketWatchDog* dog;
-        bool isUsingSSL {true};
+        // std::string host = "api.huobi.pro";
+        std::string host = "api.huobi.so";
+        WebSocketWatchDog* dog = nullptr;
 
         struct lws_context* context = nullptr;
     public:
@@ -41,7 +40,6 @@ namespace Huobi {
         SubscriptionClientImpl() {
             apiKey = "";
             secretKey = "";
-            isUsingSSL = true;
             impl = new WebSocketApiImpl(apiKey, secretKey);
         }
 
@@ -50,17 +48,6 @@ namespace Huobi {
             secretKey = "";
             impl = new WebSocketApiImpl(apiKey, secretKey);
             this->op = op;
-
-            isUsingSSL = true;
-            if(this->op.url.find("coloc.huobi.com") != std::string::npos)
-            {
-                isUsingSSL = false;
-            }
-
-            if (!op.url.empty()) {
-                host = GetHost(op.url);
-             }
-             std::cout << "websocket Host: " << host << "\n";
         }
 
         SubscriptionClientImpl(
@@ -69,18 +56,11 @@ namespace Huobi {
             this->apiKey = apiKey;
             this->secretKey = secretKey;
             this->op = op;
-            isUsingSSL = true;
-            if(this->op.url.find("coloc.huobi.com") != std::string::npos)
-            {
-                isUsingSSL = false;
-            }
-
             impl = new WebSocketApiImpl(apiKey, secretKey);
             if (!op.url.empty()) {
                 host = GetHost(op.url);
                 RequestOptions resop;
                 resop.url = op.url;
-
                 RestApiImpl* restimpl = new RestApiImpl(apiKey.c_str(), secretKey.c_str(), resop);
                 AccountsInfoMap::updateUserInfo(apiKey, restimpl);
                 delete restimpl;
@@ -89,8 +69,6 @@ namespace Huobi {
                 AccountsInfoMap::updateUserInfo(apiKey, restimpl);
                 delete restimpl;
             }
-
-            std::cout << "websocket Host: " << host << "\n";
         }
 
         ~SubscriptionClientImpl() {
@@ -123,12 +101,6 @@ namespace Huobi {
                 const char* symbols,
                 const std::function<void(const OrderUpdateEvent&) >& callback,
                 const std::function<void(HuobiApiException&)>& errorHandler = std::function<void(HuobiApiException&)>()) override;
-
-        void subscribeOrderUpdateEventNew(
-                const char* symbols,
-                const std::function<void(const OrderUpdateEventNew&) >& callback,
-                const std::function<void(HuobiApiException&)>& errorHandler = std::function<void(HuobiApiException&)>()) override;
-
 
         void subscribeAccountEvent(
                 const BalanceMode& mode,

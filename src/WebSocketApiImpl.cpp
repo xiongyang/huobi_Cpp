@@ -214,9 +214,8 @@ namespace Huobi {
             JsonWrapper data = json.getJsonObjectOrArray("data");
             Order order;
             order.orderId = data.getLong("order-id");
-            order.accountID = data.getLong("account-id");
             order.symbol = parser.getSymbol();
-            order.accountType = AccountsInfoMap::getAccount(this->accessKey, order.accountID).type;
+            order.accountType = AccountsInfoMap::getAccount(this->accessKey, data.getLong("account-id")).type;
             order.amount = data.getDecimal("order-amount");
             order.price = data.getDecimal("order-price");
             order.createdTimestamp = (data.getLong("created-at"));
@@ -228,42 +227,6 @@ namespace Huobi {
             order.source = OrderSource::lookup(data.getString("order-source"));
             orderUpdateEvent.data = order;
             return orderUpdateEvent;
-        };
-        req->isNeedSignature = true;
-        req->Callback = callback;
-        req->errorHandler = errorHandler;
-        return req;
-    }
-
-    WebSocketRequest *WebSocketApiImpl::subscribeOrderUpdateEventNew(const std::list<std::string> &symbols, const std::function<void (const OrderUpdateEventNew &)> &callback, const std::function<void (HuobiApiException &)> &errorHandler)
-    {
-        InputChecker::checker()->checkCallback(callback);
-
-        auto req = new WebSocketRequestImpl<OrderUpdateEventNew>();
-
-        req->connectionHandler = [symbols](WebSocketConnection * connection) {
-            for (std::string symbol : symbols) {
-                connection->send(Channels::orderChannelNew(symbol));
-                std::this_thread::sleep_for(std::chrono::milliseconds(1));
-            }
-        };
-
-        req->JsonParser = [](const JsonWrapper& json) {
-           // ChannelParser parser = ChannelParser(json.getString("topic"));
-            OrderUpdateEventNew order;
-            order.timestamp = TimeService::convertCSTInMillisecondToUTC(json.getLong("ts"));
-            JsonWrapper data = json.getJsonObjectOrArray("data");
-            order.symbol = data.getString("symbol");
-            order.id = data.getLong("order-id");
-            order.localId = data.getDecimal("client-order-id").toDouble();
-            order.unfilled = data.getDecimal("unfilled-amount").toDouble();
-            order.price = data.getDecimal("price").toDouble();
-            order.filled = data.getDecimal("filled-amount").toDouble();
-            order.filledTurnover = data.getDecimal("filled-cash-amount").toDouble();
-            order.state = OrderState::lookup(data.getString("order-state"));
-            order.role = data.getString("role");
-            order.type =  OrderType::lookup(data.getString("order-type"));
-            return order;
         };
         req->isNeedSignature = true;
         req->Callback = callback;
@@ -290,9 +253,7 @@ namespace Huobi {
             for (int i = 0; i < listArray.size(); i++) {
                 JsonWrapper itemInList = listArray.getJsonObjectAt(i);
                 AccountChange change;
-        long id = itemInList.getLong("account-id");
-                change.accountType = AccountsInfoMap::getAccount(this->accessKey, id).type;
-                change.accountId = id;
+                change.accountType = AccountsInfoMap::getAccount(this->accessKey, itemInList.getLong("account-id")).type;
                 change.currency = itemInList.getString("currency");
                 change.balance = itemInList.getDecimal("balance");
                 change.balanceType = BalanceType::lookup(itemInList.getString("type"));

@@ -525,7 +525,7 @@ namespace Huobi {
             source = "super-margin-api";
         }
         UrlParamsBuilder builder;
-        builder.putPost("account-id", id)
+        builder
                 .putPost("amount", newOrderRequest.amount)
                 .putPost("symbol", newOrderRequest.symbol)
                 .putPost("type", newOrderRequest.type.getValue())

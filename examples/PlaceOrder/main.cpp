@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
         apiSec = argv[2];
     }
 
-    if(argc >= 3)
+    if(argc >= 4)
     {
         options.url = argv[3];
         std::cout << "Using Url " << options.url << std::endl;
@@ -46,15 +46,15 @@ int main(int argc, char** argv) {
             "htusdt",
             AccountType::spot,
             OrderType::buy_limit,
-            Decimal(1.0),
-            Decimal(3.9)
+            Decimal(2.0),
+            Decimal(3.5)
             );
    newOrderRequest.client_order_id = "xxx";
   
 
     long orderId = client->createOrder(newOrderRequest);
     cout << orderId << endl;
-
+{
     Order orderInfo = client->getOrder("htusdt", orderId);
     cout<<"Id: " << orderInfo.orderId<<endl;
     cout<<"cId: " << orderInfo.clientOrderId << endl;
@@ -62,8 +62,9 @@ int main(int argc, char** argv) {
     cout<<"Status: " << orderInfo.state.getValue()<<endl;
     cout<<"Amount: " << orderInfo.amount<<endl;
     cout<<"Price: " << orderInfo.price<<endl;
+ } 
   
-  
+	{
     Order orderInfo = client->getOrderByClientOrderId("xxx");
    
     cout<<"Test CID Id: " << orderInfo.orderId<<endl;
@@ -72,19 +73,20 @@ int main(int argc, char** argv) {
     cout<<"Test CID Status: " << orderInfo.state.getValue()<<endl;
     cout<<"Test CID Amount: " << orderInfo.amount<<endl;
     cout<<"Test CID Price: " << orderInfo.price<<endl;
+}
 
     // Cancel above order.
-    #client->cancelOrder("htusdt", orderId);
+    //client->cancelOrder("htusdt", orderId);
     client->cancelOrderByClientOrderId("xxx");
 
-    
+ {   
     Order orderInfo = client->getOrder("htusdt", orderId);
     cout << "Id: " << orderInfo.orderId << endl;
     cout << "Type: " << orderInfo.type.getValue() << endl;
     cout << "Status: " << orderInfo.state.getValue() << endl;
     cout << "Amount: " << orderInfo.amount << endl;
     cout << "Price: " << orderInfo.price << endl;
-  
+  }
   
   return 0;
 
